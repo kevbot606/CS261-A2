@@ -149,7 +149,7 @@ class DynamicArray:
         Resizes dynamic array to new capacity
         """
         # If proposed capacity is <= to current number of elements or non-positive, do nothing.
-        if new_capacity <= self._size or new_capacity <= 0:
+        if new_capacity < self._size or new_capacity <= 0:
             return
         else:
             # Create a new DynamicArray with new_capacity
@@ -212,7 +212,7 @@ class DynamicArray:
         Removes an element at a given index, and shifts everything -1 to fill the hole
         """
         # Checking if index is valid
-        if index < 0 or index > (self._size):
+        if index < 0 or index >= (self._size):
             raise DynamicArrayException
         # Checking capacity vs size
         if (self._capacity / 4) > self._size and self._capacity > 10:
@@ -224,24 +224,52 @@ class DynamicArray:
         # Updating size
         self._size -= 1
 
-
     def slice(self, start_index: int, size: int) -> "DynamicArray":
         """
         TODO: Write this implementation
+        Returns a new DynamicArray containing size number of elements from the original array,
+        starting from start_index
         """
-        pass
+        # Checking if index valid
+        if start_index < 0 or start_index >= (self._size):
+            raise DynamicArrayException
+        # Checking if size valid
+        if size > self._size-start_index or size < 0:
+            raise DynamicArrayException
+        # Creating a DynamicArray for slice
+        dynamic_slice = DynamicArray()
+        for e in range(0, size):
+            dynamic_slice.append(self._data[e+start_index])
+        return dynamic_slice
 
     def map(self, map_func) -> "DynamicArray":
         """
         TODO: Write this implementation
+        Creates a new DynamicArray with elements derived from a map function applied to elements of
+        an original array.
         """
-        pass
+        # Creating new DynamicArray
+        mapped_array = DynamicArray()
+        # Applying map function to elements and appending
+        for e in self:
+            mapped_array.append(map_func(e))
+        return mapped_array
 
     def filter(self, filter_func) -> "DynamicArray":
         """
         TODO: Write this implementation
+        Creates new DynamicArray with only elements from original array that
+        pass filter func
         """
-        pass
+        # Creating new DynamicArray
+        filtered_array = DynamicArray()
+        # Iterating through original array
+        for e in self:
+            if filter_func(e):
+                filtered_array.append(e)
+            else:
+                continue
+        return filtered_array
 
     def reduce(self, reduce_func, initializer=None) -> object:
         """
@@ -365,35 +393,35 @@ if __name__ == "__main__":
     #     da.remove_at_index(0)
     # print(da)
 
-    print("\n# remove_at_index example 3")
-    da = DynamicArray()
-    print(da.length(), da.get_capacity())
-    [da.append(1) for i in range(100)]  # step 1 - add 100 elements
-    print(da.length(), da.get_capacity())
-    [da.remove_at_index(0) for i in range(68)]  # step 2 - remove 68 elements
-    print(da.length(), da.get_capacity())
-    da.remove_at_index(0)  # step 3 - remove 1 element
-    print(da.length(), da.get_capacity())
-    da.remove_at_index(0)  # step 4 - remove 1 element
-    print(da.length(), da.get_capacity())
-    [da.remove_at_index(0) for i in range(14)]  # step 5 - remove 14 elements
-    print(da.length(), da.get_capacity())
-    da.remove_at_index(0)  # step 6 - remove 1 element
-    print(da.length(), da.get_capacity())
-    da.remove_at_index(0)  # step 7 - remove 1 element
-    print(da.length(), da.get_capacity())
-
-    for i in range(14):
-        print("Before remove_at_index(): ", da.length(), da.get_capacity(), end="")
-        da.remove_at_index(0)
-        print(" After remove_at_index(): ", da.length(), da.get_capacity())
-
-    print("\n# remove at index example 4")
-    da = DynamicArray([1, 2, 3, 4, 5])
-    print(da)
-    for _ in range(5):
-        da.remove_at_index(0)
-        print(da)
+    # print("\n# remove_at_index example 3")
+    # da = DynamicArray()
+    # print(da.length(), da.get_capacity())
+    # [da.append(1) for i in range(100)]  # step 1 - add 100 elements
+    # print(da.length(), da.get_capacity())
+    # [da.remove_at_index(0) for i in range(68)]  # step 2 - remove 68 elements
+    # print(da.length(), da.get_capacity())
+    # da.remove_at_index(0)  # step 3 - remove 1 element
+    # print(da.length(), da.get_capacity())
+    # da.remove_at_index(0)  # step 4 - remove 1 element
+    # print(da.length(), da.get_capacity())
+    # [da.remove_at_index(0) for i in range(14)]  # step 5 - remove 14 elements
+    # print(da.length(), da.get_capacity())
+    # da.remove_at_index(0)  # step 6 - remove 1 element
+    # print(da.length(), da.get_capacity())
+    # da.remove_at_index(0)  # step 7 - remove 1 element
+    # print(da.length(), da.get_capacity())
+    #
+    # for i in range(14):
+    #     print("Before remove_at_index(): ", da.length(), da.get_capacity(), end="")
+    #     da.remove_at_index(0)
+    #     print(" After remove_at_index(): ", da.length(), da.get_capacity())
+    #
+    # print("\n# remove at index example 4")
+    # da = DynamicArray([1, 2, 3, 4, 5])
+    # print(da)
+    # for _ in range(5):
+    #     da.remove_at_index(0)
+    #     print(da)
     #
     # print("\n# slice example 1")
     # da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
@@ -412,7 +440,7 @@ if __name__ == "__main__":
     #         print(" --- OK: ", da.slice(i, cnt))
     #     except:
     #         print(" --- exception occurred.")
-    #
+
     # print("\n# map example 1")
     # da = DynamicArray([1, 5, 10, 15, 20, 25])
     # print(da)
@@ -440,31 +468,31 @@ if __name__ == "__main__":
     # da = DynamicArray([plus_one, double, square, cube])
     # for value in [1, 10, 20]:
     #     print(da.map(lambda x: x(value)))
-    #
-    # print("\n# filter example 1")
-    #
-    #
-    # def filter_a(e):
-    #     return e > 10
-    #
-    #
-    # da = DynamicArray([1, 5, 10, 15, 20, 25])
-    # print(da)
-    # result = da.filter(filter_a)
-    # print(result)
-    # print(da.filter(lambda x: (10 <= x <= 20)))
-    #
-    # print("\n# filter example 2")
-    #
-    #
-    # def is_long_word(word, length):
-    #     return len(word) > length
-    #
-    #
-    # da = DynamicArray("This is a sentence with some long words".split())
-    # print(da)
-    # for length in [3, 4, 7]:
-    #     print(da.filter(lambda word: is_long_word(word, length)))
+
+    print("\n# filter example 1")
+
+
+    def filter_a(e):
+        return e > 10
+
+
+    da = DynamicArray([1, 5, 10, 15, 20, 25])
+    print(da)
+    result = da.filter(filter_a)
+    print(result)
+    print(da.filter(lambda x: (10 <= x <= 20)))
+
+    print("\n# filter example 2")
+
+
+    def is_long_word(word, length):
+        return len(word) > length
+
+
+    da = DynamicArray("This is a sentence with some long words".split())
+    print(da)
+    for length in [3, 4, 7]:
+        print(da.filter(lambda word: is_long_word(word, length)))
     #
     # print("\n# reduce example 1")
     # values = [100, 5, 10, 15, 20, 25]

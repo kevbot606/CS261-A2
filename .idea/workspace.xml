@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d3e6bfc-8be2-4c5d-8053-e80015649ee6" name="Changes" comment="First attempt at find_mode">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="1d3e6bfc-8be2-4c5d-8053-e80015649ee6" name="Changes" comment="Fixed find_mode???">
       <change beforePath="$PROJECT_DIR$/dynamic_array.py" beforeDir="false" afterPath="$PROJECT_DIR$/dynamic_array.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +73,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745694090210</updated>
-      <workItem from="1745694091272" duration="24649000" />
+      <workItem from="1745694091272" duration="24738000" />
     </task>
     <task id="LOCAL-00001" summary="Init Commit">
       <option name="closed" value="true" />
@@ -148,7 +147,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745786799063</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Fixed find_mode???">
+      <option name="closed" value="true" />
+      <created>1745787414931</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1745787414931</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,7 +180,8 @@
     <MESSAGE value="second attempt at find_mode" />
     <MESSAGE value="second attempt at find mode" />
     <MESSAGE value="First attempt at find_mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="First attempt at find_mode" />
+    <MESSAGE value="Fixed find_mode???" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed find_mode???" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -187,11 +195,6 @@
           <url>file://$PROJECT_DIR$/dynamic_array.py</url>
           <line>236</line>
           <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dynamic_array.py</url>
-          <line>343</line>
-          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

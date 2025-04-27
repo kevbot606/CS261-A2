@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: A2 - Dynamic Array and Bag ADT
 # Due Date: 4.28.25
-# Description: An implementation of the Bag ADT
+# Description: An implementation of the Bag ADT.
 
 
 from dynamic_array import *

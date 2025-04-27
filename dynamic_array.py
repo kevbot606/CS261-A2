@@ -341,30 +341,24 @@ def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     last_seen = None
 
     # Iterating through elements
-    for e in range(0, arr._size):
-        # If first element
-        if e == 0:
-            last_seen = arr[e]
+    for e in arr:
+        # If repeat element
+        if e == last_seen:
             appearances += 1
-            high_score += 1
-            # Don't know if will be a mode, adding just in case
-            mode_da.append(last_seen)
-        # If element is same as last
-        elif arr[e] == last_seen:
-            appearances += 1
-            high_score += 1
-        # If element is new
-        else:
-            if high_score <= 1 and arr[e] not in mode_da:
-                mode_da.append(arr[e])
-            elif appearances >= high_score:
-                if arr[e] not in mode_da:
-                    mode_da.append(last_seen)
-                    high_score = appearances
-            last_seen = arr[e]
+        # If new element
+        elif e != last_seen:
             appearances = 1
-    if high_score > 1:
-        mode_da.remove_at_index(0)
+            last_seen = e
+
+        # Checking if element is new mode
+        if appearances > high_score:
+            high_score = appearances
+            mode_da = DynamicArray()
+            mode_da.append(e)
+        # Equal to previous modes
+        elif appearances == high_score:
+            mode_da.append(e)
+
 
     return mode_da, high_score
 
@@ -619,7 +613,7 @@ if __name__ == "__main__":
     #
     print("\n# find_mode example 1")
     test_cases = (
-        # [1, 1, 2, 3, 3, 4],
+        [1, 1, 2, 3, 3, 4],
         [1, 2, 3, 4, 5],
         ["Apple", "Banana", "Banana", "Carrot", "Carrot",
          "Date", "Date", "Date", "Eggplant", "Eggplant", "Eggplant",

@@ -274,22 +274,101 @@ class DynamicArray:
     def reduce(self, reduce_func, initializer=None) -> object:
         """
         TODO: Write this implementation
+        Applies reduce_func to all elements of dynamic array and returns the result
         """
-        pass
+        # Checking if array is empty
+        if self._size == 0:
+            return initializer
+        # Setting initializer to first element, if not provided
+        if initializer is None:
+            initializer = self._data[0]
+            for e in range(1, self._size):
+                value = reduce_func(initializer,self[e])
+                # Updating initializer for next loop
+                initializer = value
+        # If initializer provided, starting with first element
+        else:
+            for e in range(0, self._size):
+                value = reduce_func(initializer,self[e])
+                # Updating initializer for next loop
+                initializer = value
+
+        return initializer
 
 
 def chunk(arr: DynamicArray) -> "DynamicArray":
     """
     TODO: Write this implementation
+    Takes a DynamicArray. Splits it into chunks of non-descending arrays, and returns them
+    in a DynamicArray of the chunked arrays
     """
-    pass
+    # Creating the "final" array
+    chunks_array = DynamicArray()
+    # Creating a temp DynamicArray to hold each chunk
+    chunk = DynamicArray()
+    # Iterating through elements, separating into chunks
+    for e in range(0, arr._size):
+        # Trying to get following element
+        try:
+            next_elem = arr[e+1]
+        except DynamicArrayException:
+            next_elem = None
+        # Comparing element with next element
+        if next_elem is not None and arr[e] <= next_elem:
+            # Adding to the existing temp array
+            chunk.append(arr[e])
+        else:
+            # Adding chunk to array of chunks
+            chunk.append(arr[e])
+            chunks_array.append(chunk)
+            # Overwriting the chunk array to clear
+            chunk = DynamicArray()
+    return chunks_array
 
 
 def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     """
     TODO: Write this implementation
+    Find the mode of a DynamicArray and returns a tuple of the DynamicArray and mode(s)
+    presented in the order they appear.
     """
-    pass
+    # Creating modes DynamicArray()
+    mode_da = DynamicArray()
+
+    # Creating "high score", last seen, and appearances trackers
+    high_score = 0
+    appearances = 0
+    last_seen = None
+
+    # Iterating through elements
+    for e in range(0, arr._size):
+        # If first element
+        if e == 0:
+            last_seen = arr[e]
+            appearances += 1
+            high_score += 1
+            # Don't know if will be a mode, adding just in case
+            mode_da.append(last_seen)
+        # If element is same as last
+        elif arr[e] == last_seen:
+            appearances += 1
+            high_score += 1
+        # If element is new
+        else:
+            if high_score <= 1 and arr[e] not in mode_da:
+                mode_da.append(arr[e])
+
+            elif appearances >= high_score:
+                if arr[e] not in mode_da:
+                    mode_da.append(last_seen)
+                    high_score = appearances
+            last_seen = arr[e]
+            appearances = 1
+    if high_score > 1:
+        mode_da.remove_at_index(0)
+
+    return mode_da, high_score
+
 
 
 # ------------------- BASIC TESTING -----------------------------------------
@@ -468,32 +547,32 @@ if __name__ == "__main__":
     # da = DynamicArray([plus_one, double, square, cube])
     # for value in [1, 10, 20]:
     #     print(da.map(lambda x: x(value)))
-
-    print("\n# filter example 1")
-
-
-    def filter_a(e):
-        return e > 10
-
-
-    da = DynamicArray([1, 5, 10, 15, 20, 25])
-    print(da)
-    result = da.filter(filter_a)
-    print(result)
-    print(da.filter(lambda x: (10 <= x <= 20)))
-
-    print("\n# filter example 2")
-
-
-    def is_long_word(word, length):
-        return len(word) > length
-
-
-    da = DynamicArray("This is a sentence with some long words".split())
-    print(da)
-    for length in [3, 4, 7]:
-        print(da.filter(lambda word: is_long_word(word, length)))
     #
+    # print("\n# filter example 1")
+    #
+    #
+    # def filter_a(e):
+    #     return e > 10
+    #
+    #
+    # da = DynamicArray([1, 5, 10, 15, 20, 25])
+    # print(da)
+    # result = da.filter(filter_a)
+    # print(result)
+    # print(da.filter(lambda x: (10 <= x <= 20)))
+    #
+    # print("\n# filter example 2")
+    #
+    #
+    # def is_long_word(word, length):
+    #     return len(word) > length
+    #
+    #
+    # da = DynamicArray("This is a sentence with some long words".split())
+    # print(da)
+    # for length in [3, 4, 7]:
+    #     print(da.filter(lambda word: is_long_word(word, length)))
+
     # print("\n# reduce example 1")
     # values = [100, 5, 10, 15, 20, 25]
     # da = DynamicArray(values)
@@ -508,7 +587,7 @@ if __name__ == "__main__":
     # da.remove_at_index(0)
     # print(da.reduce(lambda x, y: x + y ** 2))
     # print(da.reduce(lambda x, y: x + y ** 2, -1))
-    #
+
     # def print_chunked_da(arr: DynamicArray):
     #     if len(str(arr)) <= 100:
     #         print(arr)
@@ -539,23 +618,23 @@ if __name__ == "__main__":
     #     print(da)
     #     print_chunked_da(chunked_da)
     #
-    # print("\n# find_mode example 1")
-    # test_cases = (
-    #     [1, 1, 2, 3, 3, 4],
-    #     [1, 2, 3, 4, 5],
-    #     ["Apple", "Banana", "Banana", "Carrot", "Carrot",
-    #      "Date", "Date", "Date", "Eggplant", "Eggplant", "Eggplant",
-    #      "Fig", "Fig", "Grape"]
-    # )
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     mode, frequency = find_mode(da)
-    #     print(f"{da}\nMode: {mode}, Frequency: {frequency}\n")
-    #
-    # case = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-    # da = DynamicArray()
-    # for x in range(len(case)):
-    #     da.append(case[x])
-    #     mode, frequency = find_mode(da)
-    #     print(f"{da}\nMode: {mode}, Frequency: {frequency}")
+    print("\n# find_mode example 1")
+    test_cases = (
+        # [1, 1, 2, 3, 3, 4],
+        [1, 2, 3, 4, 5],
+        ["Apple", "Banana", "Banana", "Carrot", "Carrot",
+         "Date", "Date", "Date", "Eggplant", "Eggplant", "Eggplant",
+         "Fig", "Fig", "Grape"]
+    )
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        mode, frequency = find_mode(da)
+        print(f"{da}\nMode: {mode}, Frequency: {frequency}\n")
+
+    case = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+    da = DynamicArray()
+    for x in range(len(case)):
+        da.append(case[x])
+        mode, frequency = find_mode(da)
+        print(f"{da}\nMode: {mode}, Frequency: {frequency}")

@@ -341,31 +341,23 @@ def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     last_seen = None
 
     # Iterating through elements
-    for e in range(0, arr._size):
-        # If first element
-        if e == 0:
-            last_seen = arr[e]
+    for e in arr:
+        # If repeat element
+        if e == last_seen:
             appearances += 1
-            high_score += 1
-            # Don't know if will be a mode, adding just in case
-            mode_da.append(last_seen)
-        # If element is same as last
-        elif arr[e] == last_seen:
-            appearances += 1
-            high_score += 1
-        # If element is new
-        else:
-            if high_score <= 1 and arr[e] not in mode_da:
-                mode_da.append(arr[e])
-
-            elif appearances >= high_score:
-                if arr[e] not in mode_da:
-                    mode_da.append(last_seen)
-                    high_score = appearances
-            last_seen = arr[e]
+        # If new element
+        elif e != last_seen:
             appearances = 1
-    if high_score > 1:
-        mode_da.remove_at_index(0)
+            last_seen = e
+
+        # Checking if element is new mode
+        if appearances > high_score:
+            high_score = appearances
+            mode_da = DynamicArray()
+            mode_da.append(e)
+        # Equal to previous modes
+        elif appearances == high_score:
+            mode_da.append(e)
 
     return mode_da, high_score
 
@@ -376,251 +368,251 @@ def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
 
 if __name__ == "__main__":
 
-    # print("\n# resize example 1")
-    # da = DynamicArray()
+    print("\n# resize example 1")
+    da = DynamicArray()
 
-    # # print dynamic array's size, capacity and the contents
-    # # of the underlying static array (data)
-    # da.print_da_variables()
-    # da.resize(8)
-    # da.print_da_variables()
-    # da.resize(2)
-    # da.print_da_variables()
-    # da.resize(0)
-    # da.print_da_variables()
-    #
-    # print("\n# resize example 2")
-    # da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8])
-    # print(da)
-    # da.resize(20)
-    # print(da)
-    # da.resize(4)
-    # print(da)
+    # print dynamic array's size, capacity and the contents
+    # of the underlying static array (data)
+    da.print_da_variables()
+    da.resize(8)
+    da.print_da_variables()
+    da.resize(2)
+    da.print_da_variables()
+    da.resize(0)
+    da.print_da_variables()
 
-    # print("\n# append example 1")
-    # da = DynamicArray()
-    # da.print_da_variables()
-    # da.append(1)
-    # da.print_da_variables()
-    # print(da)
-    #
-    # print("\n# append example 2")
-    # da = DynamicArray()
-    # for i in range(9):
-    #     da.append(i + 101)
-    #     print(da)
-    #
-    # print("\n# append example 3")
-    # da = DynamicArray()
-    # for i in range(600):
-    #     da.append(i)
-    # print(da.length())
-    # print(da.get_capacity())
-    #
-    # print("\n# insert_at_index example 1")
-    # da = DynamicArray([100])
-    # print(da)
-    # da.insert_at_index(0, 200)
-    # da.insert_at_index(0, 300)
-    # da.insert_at_index(0, 400)
-    # print(da)
-    # da.insert_at_index(3, 500)
-    # print(da)
-    # da.insert_at_index(1, 600)
-    # print(da)
-    #
-    # print("\n# insert_at_index example 2")
-    # da = DynamicArray()
-    # try:
-    #     da.insert_at_index(-1, 100)
-    # except Exception as e:
-    #     print("Exception raised:", type(e))
-    # da.insert_at_index(0, 200)
-    # try:
-    #     da.insert_at_index(2, 300)
-    # except Exception as e:
-    #     print("Exception raised:", type(e))
-    # print(da)
-    #
-    # print("\n# insert at index example 3")
-    # da = DynamicArray()
-    # for i in range(1, 10):
-    #     index, value = i - 4, i * 10
-    #     try:
-    #         da.insert_at_index(index, value)
-    #     except Exception as e:
-    #         print("Cannot insert value", value, "at index", index)
-    # print(da)
+    print("\n# resize example 2")
+    da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8])
+    print(da)
+    da.resize(20)
+    print(da)
+    da.resize(4)
+    print(da)
 
-    # print("\n# remove_at_index example 1")
-    # da = DynamicArray([10, 20, 30, 40, 50, 60, 70, 80])
-    # print(da)
-    # da.remove_at_index(0)
-    # print(da)
-    # da.remove_at_index(6)
-    # print(da)
-    # da.remove_at_index(2)
-    # print(da)
-    #
-    # print("\n# remove_at_index example 2")
-    # da = DynamicArray([1024])
-    # print(da)
-    # for i in range(17):
-    #     da.insert_at_index(i, i)
-    # print(da.length(), da.get_capacity())
-    # for i in range(16, -1, -1):
-    #     da.remove_at_index(0)
-    # print(da)
+    print("\n# append example 1")
+    da = DynamicArray()
+    da.print_da_variables()
+    da.append(1)
+    da.print_da_variables()
+    print(da)
 
-    # print("\n# remove_at_index example 3")
-    # da = DynamicArray()
-    # print(da.length(), da.get_capacity())
-    # [da.append(1) for i in range(100)]  # step 1 - add 100 elements
-    # print(da.length(), da.get_capacity())
-    # [da.remove_at_index(0) for i in range(68)]  # step 2 - remove 68 elements
-    # print(da.length(), da.get_capacity())
-    # da.remove_at_index(0)  # step 3 - remove 1 element
-    # print(da.length(), da.get_capacity())
-    # da.remove_at_index(0)  # step 4 - remove 1 element
-    # print(da.length(), da.get_capacity())
-    # [da.remove_at_index(0) for i in range(14)]  # step 5 - remove 14 elements
-    # print(da.length(), da.get_capacity())
-    # da.remove_at_index(0)  # step 6 - remove 1 element
-    # print(da.length(), da.get_capacity())
-    # da.remove_at_index(0)  # step 7 - remove 1 element
-    # print(da.length(), da.get_capacity())
-    #
-    # for i in range(14):
-    #     print("Before remove_at_index(): ", da.length(), da.get_capacity(), end="")
-    #     da.remove_at_index(0)
-    #     print(" After remove_at_index(): ", da.length(), da.get_capacity())
-    #
-    # print("\n# remove at index example 4")
-    # da = DynamicArray([1, 2, 3, 4, 5])
-    # print(da)
-    # for _ in range(5):
-    #     da.remove_at_index(0)
-    #     print(da)
-    #
-    # print("\n# slice example 1")
-    # da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    # da_slice = da.slice(1, 3)
-    # print(da, da_slice, sep="\n")
-    # da_slice.remove_at_index(0)
-    # print(da, da_slice, sep="\n")
-    #
-    # print("\n# slice example 2")
-    # da = DynamicArray([10, 11, 12, 13, 14, 15, 16])
-    # print("SOURCE:", da)
-    # slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1), (6, -1)]
-    # for i, cnt in slices:
-    #     print("Slice", i, "/", cnt, end="")
-    #     try:
-    #         print(" --- OK: ", da.slice(i, cnt))
-    #     except:
-    #         print(" --- exception occurred.")
+    print("\n# append example 2")
+    da = DynamicArray()
+    for i in range(9):
+        da.append(i + 101)
+        print(da)
 
-    # print("\n# map example 1")
-    # da = DynamicArray([1, 5, 10, 15, 20, 25])
-    # print(da)
-    # print(da.map(lambda x: x ** 2))
-    #
-    # print("\n# map example 2")
-    #
-    #
-    # def double(value):
-    #     return value * 2
-    #
-    #
-    # def square(value):
-    #     return value ** 2
-    #
-    #
-    # def cube(value):
-    #     return value ** 3
-    #
-    #
-    # def plus_one(value):
-    #     return value + 1
-    #
-    #
-    # da = DynamicArray([plus_one, double, square, cube])
-    # for value in [1, 10, 20]:
-    #     print(da.map(lambda x: x(value)))
-    #
-    # print("\n# filter example 1")
-    #
-    #
-    # def filter_a(e):
-    #     return e > 10
-    #
-    #
-    # da = DynamicArray([1, 5, 10, 15, 20, 25])
-    # print(da)
-    # result = da.filter(filter_a)
-    # print(result)
-    # print(da.filter(lambda x: (10 <= x <= 20)))
-    #
-    # print("\n# filter example 2")
-    #
-    #
-    # def is_long_word(word, length):
-    #     return len(word) > length
-    #
-    #
-    # da = DynamicArray("This is a sentence with some long words".split())
-    # print(da)
-    # for length in [3, 4, 7]:
-    #     print(da.filter(lambda word: is_long_word(word, length)))
+    print("\n# append example 3")
+    da = DynamicArray()
+    for i in range(600):
+        da.append(i)
+    print(da.length())
+    print(da.get_capacity())
 
-    # print("\n# reduce example 1")
-    # values = [100, 5, 10, 15, 20, 25]
-    # da = DynamicArray(values)
-    # print(da)
-    # print(da.reduce(lambda x, y: (x // 5 + y ** 2)))
-    # print(da.reduce(lambda x, y: (x + y ** 2), -1))
-    #
-    # print("\n# reduce example 2")
-    # da = DynamicArray([100])
-    # print(da.reduce(lambda x, y: x + y ** 2))
-    # print(da.reduce(lambda x, y: x + y ** 2, -1))
-    # da.remove_at_index(0)
-    # print(da.reduce(lambda x, y: x + y ** 2))
-    # print(da.reduce(lambda x, y: x + y ** 2, -1))
+    print("\n# insert_at_index example 1")
+    da = DynamicArray([100])
+    print(da)
+    da.insert_at_index(0, 200)
+    da.insert_at_index(0, 300)
+    da.insert_at_index(0, 400)
+    print(da)
+    da.insert_at_index(3, 500)
+    print(da)
+    da.insert_at_index(1, 600)
+    print(da)
 
-    # def print_chunked_da(arr: DynamicArray):
-    #     if len(str(arr)) <= 100:
-    #         print(arr)
-    #     else:
-    #         print(f"DYN_ARR Size/Cap: {arr.length()}/{arr.get_capacity()}")
-    #         print('[\n' + ',\n'.join(f'\t{chunk}' for chunk in arr) + '\n]')
-    #
-    # print("\n# chunk example 1")
-    # test_cases = [
-    #     [10, 20, 30, 30, 5, 10, 1, 2, 3, 4],
-    #     ['App', 'Async', 'Cloud', 'Data', 'Deploy',
-    #      'C', 'Java', 'Python', 'Git', 'GitHub',
-    #      'Class', 'Method', 'Heap']
-    # ]
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     chunked_da = chunk(da)
-    #     print(da)
-    #     print_chunked_da(chunked_da)
-    #
-    # print("\n# chunk example 2")
-    # test_cases = [[], [261], [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]]
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     chunked_da = chunk(da)
-    #     print(da)
-    #     print_chunked_da(chunked_da)
-    #
+    print("\n# insert_at_index example 2")
+    da = DynamicArray()
+    try:
+        da.insert_at_index(-1, 100)
+    except Exception as e:
+        print("Exception raised:", type(e))
+    da.insert_at_index(0, 200)
+    try:
+        da.insert_at_index(2, 300)
+    except Exception as e:
+        print("Exception raised:", type(e))
+    print(da)
+
+    print("\n# insert at index example 3")
+    da = DynamicArray()
+    for i in range(1, 10):
+        index, value = i - 4, i * 10
+        try:
+            da.insert_at_index(index, value)
+        except Exception as e:
+            print("Cannot insert value", value, "at index", index)
+    print(da)
+
+    print("\n# remove_at_index example 1")
+    da = DynamicArray([10, 20, 30, 40, 50, 60, 70, 80])
+    print(da)
+    da.remove_at_index(0)
+    print(da)
+    da.remove_at_index(6)
+    print(da)
+    da.remove_at_index(2)
+    print(da)
+
+    print("\n# remove_at_index example 2")
+    da = DynamicArray([1024])
+    print(da)
+    for i in range(17):
+        da.insert_at_index(i, i)
+    print(da.length(), da.get_capacity())
+    for i in range(16, -1, -1):
+        da.remove_at_index(0)
+    print(da)
+
+    print("\n# remove_at_index example 3")
+    da = DynamicArray()
+    print(da.length(), da.get_capacity())
+    [da.append(1) for i in range(100)]  # step 1 - add 100 elements
+    print(da.length(), da.get_capacity())
+    [da.remove_at_index(0) for i in range(68)]  # step 2 - remove 68 elements
+    print(da.length(), da.get_capacity())
+    da.remove_at_index(0)  # step 3 - remove 1 element
+    print(da.length(), da.get_capacity())
+    da.remove_at_index(0)  # step 4 - remove 1 element
+    print(da.length(), da.get_capacity())
+    [da.remove_at_index(0) for i in range(14)]  # step 5 - remove 14 elements
+    print(da.length(), da.get_capacity())
+    da.remove_at_index(0)  # step 6 - remove 1 element
+    print(da.length(), da.get_capacity())
+    da.remove_at_index(0)  # step 7 - remove 1 element
+    print(da.length(), da.get_capacity())
+
+    for i in range(14):
+        print("Before remove_at_index(): ", da.length(), da.get_capacity(), end="")
+        da.remove_at_index(0)
+        print(" After remove_at_index(): ", da.length(), da.get_capacity())
+
+    print("\n# remove at index example 4")
+    da = DynamicArray([1, 2, 3, 4, 5])
+    print(da)
+    for _ in range(5):
+        da.remove_at_index(0)
+        print(da)
+
+    print("\n# slice example 1")
+    da = DynamicArray([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    da_slice = da.slice(1, 3)
+    print(da, da_slice, sep="\n")
+    da_slice.remove_at_index(0)
+    print(da, da_slice, sep="\n")
+
+    print("\n# slice example 2")
+    da = DynamicArray([10, 11, 12, 13, 14, 15, 16])
+    print("SOURCE:", da)
+    slices = [(0, 7), (-1, 7), (0, 8), (2, 3), (5, 0), (5, 3), (6, 1), (6, -1)]
+    for i, cnt in slices:
+        print("Slice", i, "/", cnt, end="")
+        try:
+            print(" --- OK: ", da.slice(i, cnt))
+        except:
+            print(" --- exception occurred.")
+
+    print("\n# map example 1")
+    da = DynamicArray([1, 5, 10, 15, 20, 25])
+    print(da)
+    print(da.map(lambda x: x ** 2))
+
+    print("\n# map example 2")
+
+
+    def double(value):
+        return value * 2
+
+
+    def square(value):
+        return value ** 2
+
+
+    def cube(value):
+        return value ** 3
+
+
+    def plus_one(value):
+        return value + 1
+
+
+    da = DynamicArray([plus_one, double, square, cube])
+    for value in [1, 10, 20]:
+        print(da.map(lambda x: x(value)))
+
+    print("\n# filter example 1")
+
+
+    def filter_a(e):
+        return e > 10
+
+
+    da = DynamicArray([1, 5, 10, 15, 20, 25])
+    print(da)
+    result = da.filter(filter_a)
+    print(result)
+    print(da.filter(lambda x: (10 <= x <= 20)))
+
+    print("\n# filter example 2")
+
+
+    def is_long_word(word, length):
+        return len(word) > length
+
+
+    da = DynamicArray("This is a sentence with some long words".split())
+    print(da)
+    for length in [3, 4, 7]:
+        print(da.filter(lambda word: is_long_word(word, length)))
+
+    print("\n# reduce example 1")
+    values = [100, 5, 10, 15, 20, 25]
+    da = DynamicArray(values)
+    print(da)
+    print(da.reduce(lambda x, y: (x // 5 + y ** 2)))
+    print(da.reduce(lambda x, y: (x + y ** 2), -1))
+
+    print("\n# reduce example 2")
+    da = DynamicArray([100])
+    print(da.reduce(lambda x, y: x + y ** 2))
+    print(da.reduce(lambda x, y: x + y ** 2, -1))
+    da.remove_at_index(0)
+    print(da.reduce(lambda x, y: x + y ** 2))
+    print(da.reduce(lambda x, y: x + y ** 2, -1))
+
+    def print_chunked_da(arr: DynamicArray):
+        if len(str(arr)) <= 100:
+            print(arr)
+        else:
+            print(f"DYN_ARR Size/Cap: {arr.length()}/{arr.get_capacity()}")
+            print('[\n' + ',\n'.join(f'\t{chunk}' for chunk in arr) + '\n]')
+
+    print("\n# chunk example 1")
+    test_cases = [
+        [10, 20, 30, 30, 5, 10, 1, 2, 3, 4],
+        ['App', 'Async', 'Cloud', 'Data', 'Deploy',
+         'C', 'Java', 'Python', 'Git', 'GitHub',
+         'Class', 'Method', 'Heap']
+    ]
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        chunked_da = chunk(da)
+        print(da)
+        print_chunked_da(chunked_da)
+
+    print("\n# chunk example 2")
+    test_cases = [[], [261], [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]]
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        chunked_da = chunk(da)
+        print(da)
+        print_chunked_da(chunked_da)
+
     print("\n# find_mode example 1")
     test_cases = (
-        # [1, 1, 2, 3, 3, 4],
+        [1, 1, 2, 3, 3, 4],
         [1, 2, 3, 4, 5],
         ["Apple", "Banana", "Banana", "Carrot", "Carrot",
          "Date", "Date", "Date", "Eggplant", "Eggplant", "Eggplant",
